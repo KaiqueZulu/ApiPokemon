@@ -22,4 +22,17 @@ public class CardPokemonController {
         CardPokemon newCardPokemon = service.createCardPokemon(cardPokemon);
         return new ResponseEntity<>(newCardPokemon, HttpStatus.CREATED);
     }
+
+    @PostMapping("/trainer/add")
+    public ResponseEntity<CardPokemon> addCardTrainer(@RequestBody CardPokemon cardTrainer){
+        CardPokemon newCardTrainer = service.createCardPokemon(cardTrainer);
+        return new ResponseEntity<>(newCardTrainer, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/power/add")
+    public ResponseEntity<CardPokemon> addCardPower(@RequestBody CardPokemon cardPower){
+        CardPokemon newCardPower = service.createCardPokemon(cardPower);
+        return new ResponseEntity<>(newCardPower, HttpStatus.CREATED);
+    }
+
 }

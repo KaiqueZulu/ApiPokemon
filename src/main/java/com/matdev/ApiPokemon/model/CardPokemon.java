@@ -29,9 +29,4 @@ public class CardPokemon {
     private String about;
     private TrainerVariant Variant;
     private HashMap<String, String> cardAttackAreas;
-
 }
-
-/*
-
-* */
