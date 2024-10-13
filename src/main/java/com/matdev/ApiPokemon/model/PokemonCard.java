@@ -1,5 +1,7 @@
 package com.matdev.ApiPokemon.model;
 
+import com.matdev.ApiPokemon.enums.PokemonType;
+import com.matdev.ApiPokemon.enums.TrainerVariant;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +9,11 @@ import lombok.NoArgsConstructor;
 import java.util.HashMap;
 
 @Entity
-@Table(name = "Cards")
+@Table(name = "PokemonCards")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CardPokemon {
+public class PokemonCard {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
@@ -27,6 +29,5 @@ public class CardPokemon {
     private HashMap<PokemonType, String> resistance;
     private String retreatValue;
     private String about;
-    private TrainerVariant Variant;
-    private HashMap<String, String> cardAttackAreas;
+    private HashMap<String, String> cardAttackArea;
 }

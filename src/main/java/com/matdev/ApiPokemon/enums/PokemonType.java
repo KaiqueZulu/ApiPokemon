@@ -1,4 +1,4 @@
-package com.matdev.ApiPokemon.model;
+package com.matdev.ApiPokemon.enums;
 
 public enum PokemonType {
     NORMAL,
