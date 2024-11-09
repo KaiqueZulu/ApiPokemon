@@ -1,7 +1,6 @@
 package com.matdev.ApiPokemon.controller;
 
 import com.matdev.ApiPokemon.model.EnergyCard;
-import com.matdev.ApiPokemon.model.ErrorResponse;
 import com.matdev.ApiPokemon.service.EnergyCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/cards/energy")
@@ -32,24 +31,19 @@ public class EnergyCardController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Integer id){
-        Optional<EnergyCard> response = service.getById(id);
-        if(response.isPresent()){
-            return new ResponseEntity<>(response.get(), HttpStatus.OK);
-        }else{
-            ErrorResponse errorResponse = new ErrorResponse("The mentioned letter ID does not match any records found.");
-            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-        }
+        EnergyCard response = service.getById(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody EnergyCard newCard){
-        Optional<EnergyCard> response = service.update(id, newCard);
+        EnergyCard response = service.update(id, newCard);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-        if(response.isPresent()){
-            return new ResponseEntity<>(response.get(), HttpStatus.OK);
-        }else{
-            ErrorResponse errorResponse = new ErrorResponse("The mentioned letter ID does not match any records found.");
-            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Integer id) {
+        service.delete(id);
+        return ResponseEntity.ok("Card deleted successfully.");
     }
 }

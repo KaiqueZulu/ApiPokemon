@@ -1,5 +1,6 @@
 package com.matdev.ApiPokemon.service;
 
+import com.matdev.ApiPokemon.exception.CardNotFoundException;
 import com.matdev.ApiPokemon.model.EnergyCard;
 import com.matdev.ApiPokemon.repository.EnergyCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,23 +22,31 @@ public class EnergyCardService {
         return repository.findAll();
     }
 
-    public Optional<EnergyCard> getById(Integer id){
-        return repository.findById(id);
+    public EnergyCard getById(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new CardNotFoundException("Card with ID " + id + " not found."));
     }
 
-    public Optional<EnergyCard> update(Integer id, EnergyCard newCard) {
-        Optional<EnergyCard> existingCardOpt = repository.findById(id);
+    public EnergyCard update(Integer id, EnergyCard newCard) {
+        EnergyCard existingCard = repository.findById(id)
+                .orElseThrow(() -> new CardNotFoundException("Card with ID " + id + " not found."));
+        updateCard(existingCard, newCard);
+        return repository.save(existingCard);
+    }
 
-        if (existingCardOpt.isPresent()) {
-            EnergyCard currentCard = existingCardOpt.get();
+    public void delete(Integer id) {
+        EnergyCard card = repository.findById(id)
+                .orElseThrow(() -> new CardNotFoundException("Card with ID " + id + " not found."));
 
-            currentCard.setName(newCard.getName());
-            currentCard.setType(newCard.getType());
+        repository.delete(card);
+    }
+
+    private void updateCard(EnergyCard currentCard, EnergyCard newCard) {
+        currentCard.setName(Optional.ofNullable(newCard.getName()).orElse(currentCard.getName()));
+        currentCard.setType(Optional.ofNullable(newCard.getType()).orElse(currentCard.getType()));
+
+        if (newCard.getAbout() != null && !newCard.getAbout().isBlank()) {
             currentCard.setAbout(newCard.getAbout());
-
-            repository.save(currentCard);
-            return Optional.of(currentCard);
         }
-        return Optional.empty();
     }
 }
