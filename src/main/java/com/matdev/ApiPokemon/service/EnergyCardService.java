@@ -15,6 +15,7 @@ public class EnergyCardService {
     private EnergyCardRepository repository;
 
     public EnergyCard create(EnergyCard energyCard){
+        System.out.println(energyCard);
         return repository.save(energyCard);
     }
 
