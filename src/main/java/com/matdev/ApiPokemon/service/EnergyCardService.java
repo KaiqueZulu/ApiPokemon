@@ -15,7 +15,6 @@ public class EnergyCardService {
     private EnergyCardRepository repository;
 
     public EnergyCard create(EnergyCard energyCard){
-        System.out.println(energyCard);
         return repository.save(energyCard);
     }
 
@@ -29,10 +28,10 @@ public class EnergyCardService {
     }
 
     public EnergyCard update(Integer id, EnergyCard newCard) {
-        EnergyCard existingCard = repository.findById(id)
+        EnergyCard currentCard = repository.findById(id)
                 .orElseThrow(() -> new CardNotFoundException("Card with ID " + id + " not found."));
-        updateCard(existingCard, newCard);
-        return repository.save(existingCard);
+        updateCard(currentCard, newCard);
+        return repository.save(currentCard);
     }
 
     public void delete(Integer id) {
