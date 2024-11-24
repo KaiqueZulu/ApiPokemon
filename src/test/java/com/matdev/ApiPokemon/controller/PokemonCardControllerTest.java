@@ -62,44 +62,44 @@ public class PokemonCardControllerTest {
         collectorInformation.put("collectionNumber", "65/149");
         collectorInformation.put("rarity", "Rare");
 
-        // Instanciação dos objetos card e savedCard
-        card = new PokemonCard(
-                null,
-                "Cosmog",
-                60,
-                PokemonType.PSYCHIC,
-                "basic",
-                "",
-                "Cosmoem",
-                0.2F,
-                0.1F,
-                abilities,
-                cardBody,
-                weaknesses,
-                resistances,
-                "1",
-                collectorInformation,
-                "Your body is gaseous and fragile. It grows slowly while collecting dust from the atmosphere."
-        );
 
-        savedCard = new PokemonCard(
-                1, // ID preenchido
-                card.getName(),
-                card.getLife(),
-                card.getType(),
-                card.getStage(),
-                card.getEvolvesFrom(),
-                card.getEvolvesTo(),
-                card.getHeight(),
-                card.getWeight(),
-                card.getAbility(),
-                card.getCardBody(),
-                card.getWeakness(),
-                card.getResistance(),
-                card.getRetreatValue(),
-                card.getCollectorInformation(),
-                card.getAbout()
-        );
+        card = PokemonCard.builder()
+                .id(null)
+                .name("Cosmog")
+                .life(60)
+                .type(PokemonType.PSYCHIC)
+                .stage("basic")
+                .evolvesFrom("")
+                .evolvesTo("Cosmoem")
+                .ability(abilities)
+                .cardBody(cardBody)
+                .weakness(weaknesses)
+                .resistance(resistances)
+                .retreatValue("1")
+                .collectorInformation(collectorInformation)
+                .about("Your body is gaseous and fragile. It grows slowly while collecting dust from the atmosphere.")
+                .height(0.2F)
+                .weight(0.1F)
+                .build();
+
+        savedCard = PokemonCard.builder()
+                .id(1)
+                .name(card.getName())
+                .life(card.getLife())
+                .type(card.getType())
+                .stage(card.getStage())
+                .evolvesFrom(card.getEvolvesFrom())
+                .evolvesTo(card.getEvolvesTo())
+                .ability(card.getAbility())
+                .cardBody(card.getCardBody())
+                .weakness(card.getWeakness())
+                .resistance(card.getResistance())
+                .retreatValue(card.getRetreatValue())
+                .collectorInformation(card.getCollectorInformation())
+                .about(card.getAbout())
+                .height(card.getHeight())
+                .weight(card.getWeight())
+                .build();
 
         pokemonCardList.add(card);
 
