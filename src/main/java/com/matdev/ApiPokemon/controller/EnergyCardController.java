@@ -30,20 +30,20 @@ public class EnergyCardController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Integer id){
+    public ResponseEntity<EnergyCard> getById(@PathVariable Integer id) {
         EnergyCard response = service.getById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody EnergyCard newCard){
+    public ResponseEntity<EnergyCard> update(@PathVariable Integer id, @RequestBody EnergyCard newCard) {
         EnergyCard response = service.update(id, newCard);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Integer id) {
-        service.delete(id);
-        return ResponseEntity.ok("Card deleted successfully.");
+        String response = service.delete(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

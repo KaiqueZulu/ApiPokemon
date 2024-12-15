@@ -42,7 +42,7 @@ public class PokemonCardController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Integer id){
-        service.delete(id);
-        return ResponseEntity.ok("Card deleted successfully.");
+        String response = service.delete(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

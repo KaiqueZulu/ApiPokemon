@@ -34,11 +34,13 @@ public class EnergyCardService {
         return repository.save(currentCard);
     }
 
-    public void delete(Integer id) {
+    public String delete(Integer id) {
         EnergyCard card = repository.findById(id)
                 .orElseThrow(() -> new CardNotFoundException("Card with ID " + id + " not found."));
 
         repository.delete(card);
+
+        return "Card deleted successfully.";
     }
 
     private void updateCard(EnergyCard currentCard, EnergyCard newCard) {

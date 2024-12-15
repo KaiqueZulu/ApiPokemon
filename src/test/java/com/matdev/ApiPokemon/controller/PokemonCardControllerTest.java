@@ -5,6 +5,7 @@ import com.matdev.ApiPokemon.enums.PokemonType;
 import com.matdev.ApiPokemon.exception.CardNotFoundException;
 import com.matdev.ApiPokemon.model.PokemonCard;
 import com.matdev.ApiPokemon.service.PokemonCardService;
+import com.matdev.ApiPokemon.utils.PokemonCardBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -44,67 +45,14 @@ public class PokemonCardControllerTest {
 
     @BeforeEach
     public void setUp() {
-        // Criação de HashMaps comuns para o teste
-        HashMap<String, String> abilities = new HashMap<>();
+        PokemonCardBuilder builder = new PokemonCardBuilder();
 
-        HashMap<String, String> cardBody = new HashMap<>();
-        cardBody.put("name", "Dust Collection");
-        cardBody.put("damage", "20");
-        cardBody.put("energyCost", PokemonType.NORMAL + ":1");
-
-        HashMap<PokemonType, String> weaknesses = new HashMap<>();
-        weaknesses.put(PokemonType.PSYCHIC, "x2");
-
-        HashMap<PokemonType, String> resistances = new HashMap<>();
-
-        HashMap<String, String> collectorInformation = new HashMap<>();
-        collectorInformation.put("illustrator", "Sanosuke Sakuma");
-        collectorInformation.put("collectionNumber", "65/149");
-        collectorInformation.put("rarity", "Rare");
-
-
-        card = PokemonCard.builder()
-                .id(null)
-                .name("Cosmog")
-                .life(60)
-                .type(PokemonType.PSYCHIC)
-                .stage("basic")
-                .evolvesFrom("")
-                .evolvesTo("Cosmoem")
-                .ability(abilities)
-                .cardBody(cardBody)
-                .weakness(weaknesses)
-                .resistance(resistances)
-                .retreatValue("1")
-                .collectorInformation(collectorInformation)
-                .about("Your body is gaseous and fragile. It grows slowly while collecting dust from the atmosphere.")
-                .height(0.2F)
-                .weight(0.1F)
-                .build();
-
-        savedCard = PokemonCard.builder()
-                .id(1)
-                .name(card.getName())
-                .life(card.getLife())
-                .type(card.getType())
-                .stage(card.getStage())
-                .evolvesFrom(card.getEvolvesFrom())
-                .evolvesTo(card.getEvolvesTo())
-                .ability(card.getAbility())
-                .cardBody(card.getCardBody())
-                .weakness(card.getWeakness())
-                .resistance(card.getResistance())
-                .retreatValue(card.getRetreatValue())
-                .collectorInformation(card.getCollectorInformation())
-                .about(card.getAbout())
-                .height(card.getHeight())
-                .weight(card.getWeight())
-                .build();
+        card = builder.build();
+        savedCard = builder.withId(1).build();
+        updateCard = builder.withLife(100).build();
+        updatedCard = savedCard;
 
         pokemonCardList.add(card);
-
-        updateCard = card;
-        updatedCard = savedCard;
     }
 
     @Test
@@ -116,12 +64,8 @@ public class PokemonCardControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(card)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("Cosmog"))
-                .andExpect(jsonPath("$.type").value(PokemonType.PSYCHIC.toString()))
-                .andExpect(jsonPath("$.evolvesTo").value("Cosmoem"))
-                .andExpect(jsonPath("$.collectorInformation.illustrator").value("Sanosuke Sakuma"))
-                .andExpect(jsonPath("$.about").value(card.getAbout()));
+                .andExpect(jsonPath("$.life").value(120))
+                .andExpect(jsonPath("$.pokemon.id").value(530));
     }
 
     @Test
@@ -130,8 +74,8 @@ public class PokemonCardControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/cards/pokemon"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value(card.getName()))
-                .andExpect(jsonPath("$[0].type").value(card.getType().toString()));
+                .andExpect(jsonPath("$[0].life").value(card.getLife()))
+                .andExpect(jsonPath("$[0].pokemon.id").value(card.getPokemon().getId()));
     }
 
     @Test
@@ -156,8 +100,8 @@ public class PokemonCardControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateCard)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("Cosmog"));
+                .andExpect(jsonPath("$.life").value(120))
+                .andExpect(jsonPath("$.pokemon.id").value(530));
     }
 
     @Test

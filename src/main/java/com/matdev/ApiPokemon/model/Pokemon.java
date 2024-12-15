@@ -21,4 +21,8 @@ public class Pokemon {
     private float heightM;
     private float weightLbs;
     private float weightKgs;
+
+    public Pokemon(int id) {
+        this.id = id;
+    }
 }

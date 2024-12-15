@@ -1,22 +1,30 @@
 package com.matdev.ApiPokemon.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
-@EqualsAndHashCode(callSuper = true)
-@Entity
-@Table(name = "PokemonCards")
+import java.util.HashMap;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
-public class PokemonCard extends PokemonCardBase {
-    private float height;
-    private float weight;
+@Entity
+public class PokemonCard {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Integer id;
+    private Integer life;
 
+    @ManyToOne
+    @JoinColumn(name = "pokemon_id")
+    private Pokemon pokemon;
+
+    private HashMap<String, String> ability;
+    private HashMap<String, String> cardBody;
+    private HashMap<String, String> collectorInformation;
+    private String exceptionalType = "";
+    private HashMap<String, String> exceptionalRule = new HashMap<>();
+    private String about;
 }
