@@ -17,4 +17,12 @@ public class GlobalExceptionHandler {
         errorBody.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorBody);
     }
+
+    @ExceptionHandler(PokemonNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handlePokemonNotFound(PokemonNotFoundException ex) {
+        Map<String, String> errorBody = new HashMap<>();
+        errorBody.put("error", "Card Not Found");
+        errorBody.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorBody);
+    }
 }

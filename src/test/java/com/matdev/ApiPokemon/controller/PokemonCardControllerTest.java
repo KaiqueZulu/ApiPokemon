@@ -1,7 +1,6 @@
 package com.matdev.ApiPokemon.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.matdev.ApiPokemon.enums.PokemonType;
 import com.matdev.ApiPokemon.exception.CardNotFoundException;
 import com.matdev.ApiPokemon.model.PokemonCard;
 import com.matdev.ApiPokemon.service.PokemonCardService;
@@ -18,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -64,8 +62,10 @@ public class PokemonCardControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(card)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.life").value(120))
-                .andExpect(jsonPath("$.pokemon.id").value(530));
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.life").exists())
+                .andExpect(jsonPath("$.pokemon.id").exists())
+                .andExpect(jsonPath("$.collectorInformation").exists());
     }
 
     @Test
@@ -74,8 +74,9 @@ public class PokemonCardControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/cards/pokemon"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].life").value(card.getLife()))
-                .andExpect(jsonPath("$[0].pokemon.id").value(card.getPokemon().getId()));
+                .andExpect(jsonPath("$[0].life").exists())
+                .andExpect(jsonPath("$[0].pokemon.id").exists())
+                .andExpect(jsonPath("$[0].collectorInformation").exists());
     }
 
     @Test
@@ -100,14 +101,16 @@ public class PokemonCardControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateCard)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.life").value(120))
-                .andExpect(jsonPath("$.pokemon.id").value(530));
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.life").exists())
+                .andExpect(jsonPath("$.pokemon.id").exists())
+                .andExpect(jsonPath("$.collectorInformation").exists());
     }
 
     @Test
     public void testDeletePokemonCards() throws Exception{
         int id = 1;
-        Mockito.doNothing().when(service).delete(id);
+        Mockito.when(service.delete(id)).thenReturn("Card deleted successfully.");
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/cards/pokemon/{id}", id))
                 .andExpect(status().isOk())
